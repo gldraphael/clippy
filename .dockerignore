@@ -1,0 +1,16 @@
+.git
+**/Dockerfile
+.DS_Store
+*.md
+docs/
+env.*
+**/bin/
+**/obj/
+**/publish/
+**/*.jpg
+.vs
+.vscode
+
+*.cake
+tools/
+.config/
