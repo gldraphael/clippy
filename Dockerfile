@@ -6,6 +6,9 @@ RUN dotnet publish -c Release -r linux-x64 --self-contained -o /app/out ./src/cl
 
 FROM ubuntu/dotnet-deps:7.0_edge AS final
 
+LABEL org.opencontainers.image.source="https://github.com/gldraphael/clippy"
+LABEL org.opencontainers.image.description="A simple hello world application."
+
 ENV \
     # Configure web servers to bind to port 80 when present
     ASPNETCORE_URLS=http://+:80      \
