@@ -47,6 +47,6 @@ jobs:
       
       - name: Publish Helm chart to GHCR
         run: |
-          helm package charts/clippy
+          helm package chart
           helm push clippy-${{ steps.prep.outputs.VERSION }}.tgz oci://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           rm clippy-${{ steps.prep.outputs.VERSION }}.tgz      
