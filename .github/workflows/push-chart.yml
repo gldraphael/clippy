@@ -22,16 +22,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Prepare
-        id: prep
-        run: |
-          VERSION=sha-${GITHUB_SHA::8}
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF/refs\/tags\//}
-          fi
-          echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
-          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
-          echo "REVISION=${GITHUB_SHA}" >> $GITHUB_OUTPUT        
 
       - name: Setup Helm
         uses: azure/setup-helm@v3
@@ -48,5 +38,6 @@ jobs:
       - name: Publish Helm chart to GHCR
         run: |
           helm package chart
-          helm push clippy-${{ steps.prep.outputs.VERSION }}.tgz oci://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          rm clippy-${{ steps.prep.outputs.VERSION }}.tgz      
+          export CHART_VERSION=$(grep 'version:' ./chart/Chart.yaml | tail -n1 | awk '{ print $2 }')
+          helm push clippy-$CHART_VERSION.tgz oci://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          rm clippy-$CHART_VERSION.tgz
