@@ -39,5 +39,6 @@ jobs:
         run: |
           helm package chart
           export CHART_VERSION=$(grep 'version:' ./chart/Chart.yaml | tail -n1 | awk '{ print $2 }')
+          echo $CHART_VERSION
           helm push clippy-$CHART_VERSION.tgz oci://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           rm clippy-$CHART_VERSION.tgz
