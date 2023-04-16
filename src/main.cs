@@ -1,4 +1,4 @@
-string CLIPPY = @"         
+const string CLIPPY = @"         
         
          __                 
         /  \        _____________ 
