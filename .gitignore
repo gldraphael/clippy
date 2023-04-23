@@ -1,3 +1,5 @@
+
+
 # Created by https://www.toptal.com/developers/gitignore/api/macos,linux,windows,rust,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,linux,windows,rust,visualstudiocode
 
@@ -111,3 +113,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,windows,rust,visualstudiocode
+
+
+!Cargo.lock
