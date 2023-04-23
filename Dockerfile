@@ -18,7 +18,7 @@ COPY ./src ./src
 RUN cargo build --release --target x86_64-unknown-linux-musl
 
 
-FROM alpine:latest
+FROM scratch
 
 LABEL org.opencontainers.image.source="https://github.com/gldraphael/clippy"
 LABEL org.opencontainers.image.description="A simple hello world application."
