@@ -3,14 +3,8 @@
 .DS_Store
 *.md
 docs/
+chart/
+.github/
 env.*
-**/bin/
-**/obj/
-**/publish/
-**/*.jpg
-.vs
+target/
 .vscode
-
-*.cake
-tools/
-.config/

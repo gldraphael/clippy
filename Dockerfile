@@ -1,24 +1,37 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM rust:alpine AS builder
+
+# Adding necessary packages
+RUN apk update --no-cache \
+    && apk add --no-cache \
+                pkgconfig \
+                openssl   \ 
+                openssl-dev \
+                musl-dev
+
+RUN rustup target add x86_64-unknown-linux-musl
+RUN rustup toolchain install stable-x86_64-unknown-linux-musl
+
 WORKDIR /app
+COPY Cargo.toml Cargo.lock ./
 
 COPY ./src ./src
-RUN dotnet publish -c Release -r linux-x64 --self-contained -o /app/out ./src/clippy.csproj
+RUN cargo build --release --target x86_64-unknown-linux-musl
 
-FROM ubuntu/dotnet-deps:7.0_edge AS final
+
+FROM scratch
 
 LABEL org.opencontainers.image.source="https://github.com/gldraphael/clippy"
 LABEL org.opencontainers.image.description="A simple hello world application."
 
 ENV \
-    # Configure web servers to bind to port 80 when present
-    ASPNETCORE_URLS=http://+:80      \
-    # Enable detection of running in a container
-    DOTNET_RUNNING_IN_CONTAINER=true \
-    # Disable globalization
-    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+    # Configure app to bind to port 80
+    APP_PORT=80
 
 EXPOSE 80
 
 WORKDIR /app
-COPY --from=build-env /app/out .
+
+COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/clippy /app/
+
+# CMD ["sleep", "infinity"]
 ENTRYPOINT ["./clippy"]
